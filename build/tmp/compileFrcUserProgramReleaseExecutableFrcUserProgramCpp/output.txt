@@ -1,0 +1,6 @@
+See file:///home/robotics/2018-2019_FRC_RobotCode/NEW_CompCode/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling intake_pivot.cpp successful.
+
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///home/robotics/2018-2019_FRC_RobotCode/NEW_CompCode/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
