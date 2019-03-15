@@ -10,7 +10,10 @@
 #include <elevator.h>
 #include <climber.h>//TESTED
 #include <diagnostic.h>
+#include <sandstorm.h>
 #include <PID.h>//TESTED
+#include <sandstorm.h>
+#include <AHRS.h>
 
 using namespace frc;
 
@@ -40,14 +43,11 @@ Intake_clamp *intake_clamp;
 Intake_pivot *intake_pivot;
 PID *pid;
 Elevator *elevator;
+Solenoid *light;
+AHRS *navx;
+Sandstorm *sandstorm;
 
 void Robot::RobotInit() {
-   
-
-
-
-
-
        joy0 = new Joystick(0);
        joy1 = new Joystick(1);
 
@@ -76,7 +76,7 @@ void Robot::RobotInit() {
        elevator = new Elevator(talon_elevator_enc, mag_switch_elevator, joy1);
        pid = new PID (talon_right_enc, talon_left_enc, claw_pivot_talon_enc, talon_elevator_enc);
        intake_pivot = new Intake_pivot(claw_pivot_talon_enc, joy1, mag_switch_claw);
-       intake_clamp = new Intake_clamp(joy0, talon_clamp);
+       intake_clamp = new Intake_clamp(joy1, talon_clamp);
        drivebase = new Drivebase (joy0, talon_left_enc, talon_left_noenc, talon_right_enc, talon_right_noenc);
        climber = new Climber(joy0, mag_switch_climber, climber_talon_arm,climber_talon_wheel, lock_servo);
        intake_wheels= new Intake_wheels(joy1, talon_wheels);
@@ -101,17 +101,21 @@ void Robot::RobotInit() {
        climber_talon_wheel->ConfigPeakOutputForward(1, 10);
        climber_talon_wheel->ConfigPeakOutputReverse(-1, 10);
        talon_elevator_enc->ConfigPeakOutputForward(.25, 10);
-       talon_elevator_enc->ConfigPeakOutputReverse(-.55, 10);
+       talon_elevator_enc->ConfigPeakOutputReverse(-.75, 10);
        talon_wheels->ConfigPeakOutputForward(1, 10);
        talon_wheels->ConfigPeakOutputReverse(-1, 10);
        talon_clamp->ConfigPeakOutputForward(1, 10);
        talon_clamp->ConfigPeakOutputReverse(-1, 10);
 
+       light = new Solenoid(0);
 
-
+      	navx = new AHRS(SPI::Port::kMXP);
 
         pid->PID_claw_elevator();
-        std::cout<<"Full Teleop v29"<<std::endl;
+        pid->PID_drivebase200();
+
+        sandstorm = new Sandstorm(talon_left_enc, talon_right_enc, pid, navx, joy0);
+        std::cout<<"Full Teleop v2"<<std::endl;
 
 
 
@@ -122,44 +126,97 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit() {
-  
+talon_left_enc->ConfigPeakOutputForward(1, 10);
+       talon_left_enc->ConfigPeakOutputReverse(-1, 10);
+       	talon_right_enc->ConfigPeakOutputForward(1, 10);
+       talon_right_enc->ConfigPeakOutputReverse(-1, 10);
+       claw_pivot_talon_enc->SetSelectedSensorPosition(0,0,10);
+            talon_elevator_enc->SetSelectedSensorPosition(0,0,10);
 }
+
+
 
 void Robot::AutonomousPeriodic() {
- 
-}
-
-void Robot::TeleopInit() {}
-
-void Robot::TeleopPeriodic() {
-    drivebase->update();
-        climber->run_climber(.75); 
+	light->Set(1);
+   
+    // climber->run_climber(.75); 
        
-        intake_wheels->update();
-        intake_clamp->update();
-         
-        intake_pivot->run_intake_pivot(0, -220, -820, -1250, -1000);
+       //intake_wheels->update();
+      // intake_clamp->update();
+         //claw_pivot_talon_enc->Set(ControlMode::PercentOutput, joy1->GetRawAxis(5));
+  
+
+       intake_pivot->run_intake_pivot(0, -175, -650, -1800, -1000);
  
-       elevator->run_elevator(-6250,-22000, -27500 );
-       if (auto_align==1) {
-        //do auto align
+       elevator->run_elevator(-9500,-22750, -27500 );
+
+   drivebase->update();
+  
+
+/* if (auto_align==1) {
+        sandstorm->path_one();
+        std::cout<<"AUTO ALIGN ON"<<std::endl;
        }
-       if (joy0->GetRawButton(5)==1 and auto_toggle1 ==0 and auto_toggle2 ==0){
+       if (joy0->GetRawButton(2)==1 and auto_toggle1 ==0 and auto_toggle2 ==0){
         auto_align= 1;
         auto_toggle1=1;
        }
-       if (joy0->GetRawButton(5)==0 and auto_toggle1 ==1){
+       if (joy0->GetRawButton(2)==0 and auto_toggle1 ==1){
         auto_toggle2=1;
+
         auto_toggle1=0;
        }
-       if(joy0->GetRawButton(5)==1 and auto_toggle2 ==1){
+       if(joy0->GetRawButton(2)==1 and auto_toggle2 ==1){
         auto_align =0;
+        sandstorm->mode = 2;
         auto_toggle2 =2;
-       }
-       if (joy0->GetRawButton(5)==0 and auto_toggle2 ==2){
+       } 
+       if (joy0->GetRawButton(2)==0 and auto_toggle2 ==2){
         auto_toggle2=0;
         auto_toggle1=0;
        }
+       /*
+         if (joy0->GetRawButton(5) ==1 and joy0->GetRawButton(6)==1){
+		talon_right_enc->Set(ControlMode::Velocity, -200);
+		talon_left_enc->Set(ControlMode::Velocity,200);
+       }
+       else if (joy0->GetRawButton(1)==1){
+		talon_right_enc->Set(ControlMode::PercentOutput,0);
+		talon_left_enc->Set(ControlMode::PercentOutput,0);
+       }
+       */
+	
+      
+       
+}
+
+void Robot::TeleopInit() {
+	talon_left_enc->ConfigPeakOutputForward(.75, 10);
+       talon_left_enc->ConfigPeakOutputReverse(-.75, 10);
+       	talon_right_enc->ConfigPeakOutputForward(.75, 10);
+       talon_right_enc->ConfigPeakOutputReverse(-.75, 10);
+}
+
+void Robot::TeleopPeriodic() {
+	light->Set(1);
+   drivebase->update();
+     climber->run_climber(.75); 
+       
+       intake_wheels->update();
+       intake_clamp->update();
+         //claw_pivot_talon_enc->Set(ControlMode::PercentOutput, joy1->GetRawAxis(5));
+  
+
+       intake_pivot->run_intake_pivot(0, -175, -650, -1350, -1000);
+ 
+       elevator->run_elevator(-9500,-22750, -27500 );
+       std::cout<<"/RightPos"<<talon_right_enc->GetSelectedSensorPosition(0)<<std::endl;
+       std::cout<<"/LeftPos"<<talon_left_enc->GetSelectedSensorPosition(0)<<std::endl;
+       std::cout<<"AmperageR: "<<talon_right_enc->GetOutputCurrent()<<std::endl;
+       std::cout<<"/AmperageL: "<<talon_left_enc->GetOutputCurrent()<<std::endl;
+       std::cout<<"Pivot Counts: "<<claw_pivot_talon_enc->GetSelectedSensorPosition(0)<<std::endl;
+       
+       
 
 
 

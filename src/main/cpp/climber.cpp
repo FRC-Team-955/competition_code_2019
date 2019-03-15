@@ -27,7 +27,7 @@ void Climber::run_climber (double max_speed){
 
 	servo_toggle();
 //sets a button to write to ClimberWheel
-climber_talon_wheel->Set(ControlMode::PercentOutput, max_speed*joy0->GetRawButton(5));
+climber_talon_wheel->Set(ControlMode::PercentOutput, -1* max_speed*joy0->GetRawButton(5));
 //lowers and brings up the climberArm
 if (joy0->GetRawButton(3)==1){
 	climber_talon_arm->Set(ControlMode::PercentOutput, max_speed * 1);

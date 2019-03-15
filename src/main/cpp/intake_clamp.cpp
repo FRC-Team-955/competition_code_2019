@@ -9,8 +9,8 @@ void Intake_clamp :: update () {
 	//std::cout<<"updating intake_clamp";
 
 	// collect values from joystick
-	closeButton = joy0->GetRawButton( intake_clamp_close_joynum );
-	openButton = joy0->GetRawButton( intake_clamp_open_joynum );
+	closeButton = joy1->GetRawButton( 5 );
+	openButton = joy1->GetRawButton( 6 );
 
 	//std::cout<<"\tclose-"<<closeButton<<"  open-"<<openButton;
 

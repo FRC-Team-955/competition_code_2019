@@ -9,11 +9,11 @@ public:
 	// initialize intake_clamp
 	Intake_clamp (
 		// receive parameters
-		frc::Joystick *joy0,
+		frc::Joystick *joy1,
 		TalonSRX *talon_clamp
 	):
 		// initialize member variables
-		joy0(joy0),
+		joy1(joy1),
 		talon_clamp(talon_clamp)
 	{
 		// run on initialization
@@ -23,7 +23,7 @@ public:
 	// run this in TeleopPeriodic
 	void update();
 private:
-	frc::Joystick *joy0;
+	frc::Joystick *joy1;
 	TalonSRX *talon_clamp;
 	bool closeButton=false, openButton=false;
 	float clampSpeed = intake_clamp_speed;

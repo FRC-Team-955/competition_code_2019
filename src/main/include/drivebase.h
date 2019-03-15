@@ -33,12 +33,18 @@ public:
 	};
 
 	//run this in TeleopPeriodic
+	void full_speed();
+	void choice_speed(float max_speed);
 	void update();
+	
 private:
 	frc::Joystick *joy0;
 	TalonSRX *talon_left_enc, *talon_left_noenc;
 	TalonSRX *talon_right_enc, *talon_right_noenc;
 	float move=0.0, turn=0.0;
+	bool state_from_button = 0;
+	bool button_state = 0;
+	bool toggle_state = 0;
 };
 
 #endif

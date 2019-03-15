@@ -69,19 +69,19 @@ const int elevator_down_joynum = 3;
 const int intake_wheels_in_joynum = 3;
 const int intake_wheels_out_joynum = 4;
 const int intake_clamp_close_joynum = 2;
-const int intake_clamp_open_joynum = 1;
+const int intake_clamp_open_joynum = 3;
 
 
 
 // wheel velocities
-const float drivebase_max_speed = .65;
+const float drivebase_max_speed = .75;
 const float intake_wheels_speed = 0.4;
 const float intake_clamp_speed  = 0.4;
 
 
 // exponents for variable motion values- this way, most of the joystick's range will correspond to low values, and only the extremes will make high speeds
-const int drivebase_move_exp = 3;
-const int drivebase_turn_exp = 3;
+const int drivebase_move_exp = 5;
+const int drivebase_turn_exp = 5;
 const int elevator_up_exp = 2;
 const int elevator_down_exp = 2;
 

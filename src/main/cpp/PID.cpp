@@ -33,7 +33,7 @@ claw_pivot_talon_enc->Config_kD(0,0,10);
 claw_pivot_talon_enc->Config_kF(0,0,10);
 
 std::cout<<"PID set"<<std::endl;
-talon_elevator_enc->Config_kP(10,0,10);
+talon_elevator_enc->Config_kP(4,0,10);
 talon_elevator_enc->Config_kI(0,0,10);
 talon_elevator_enc->Config_kD(0,0,10);
 talon_elevator_enc->Config_kF(0,0,10);

@@ -1,4 +1,0 @@
-See file:///home/robotics/2018-2019_FRC_RobotCode/NEW_CompCode/build/tmp/linkFrcUserProgramReleaseExecutable/output.txt for all output for linkFrcUserProgramReleaseExecutable.
-linking frcUserProgram successful.
-
-Finished linkFrcUserProgramReleaseExecutable, see full log file:///home/robotics/2018-2019_FRC_RobotCode/NEW_CompCode/build/tmp/linkFrcUserProgramReleaseExecutable/output.txt.
